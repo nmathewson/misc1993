@@ -1,0 +1,61 @@
+.autodepend
+
+#DEBUG = 1           # comment me out for no debugging.
+
+#           * MACROS *
+
+MODEL   = s
+EXENAME = sublim
+
+!if $d(DEBUG)
+COMPSW  = -c -m$(MODEL) -v
+LINKSW  = /v /c
+!else
+COMPSW  = -c -m$(MODEL) -G -O2
+LINKSW  = /c
+!endif
+
+
+OBJS    = sublim.obj words.obj msgs.obj\
+  egavga.obj \
+  trip.obj \
+  sans.obj
+
+LIBS    = emu.lib \
+  math$(MODEL).lib \
+  c$(MODEL).lib \
+  graphics.lib
+
+
+LIBPATHS = C:\bc\lib
+INCPATHS = C:\bc\include
+
+CC      = bcc $(COMPSW) -I$(INCPATHS)
+LINK    = tlink /L$(LIBPATHS) $(LINKSW)
+
+#           * Implicit rules *
+
+.cpp.obj:
+    $(CC) -c {$< }
+
+#           * Explicit rules *
+
+# EXE FILE
+
+$(EXENAME).exe: $(OBJS)
+  $(LINK) @&&!
+C0$(MODEL) $(OBJS)
+$(EXENAME)
+# $(EXENAME)         # Map
+$(LIBS)
+!
+
+# OBJ FILES
+
+sublim.obj:
+
+words.obj:
+
+msgs.obj:
+
+
